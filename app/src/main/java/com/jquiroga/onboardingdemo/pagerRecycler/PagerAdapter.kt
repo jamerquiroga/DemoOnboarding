@@ -22,8 +22,6 @@ class PagerAdapter(private val paoMovies: ArrayList<Movie>) : RecyclerView.Adapt
         holder.bindMovie(loMovie)
     }
 
-
-
     class PagerHolder(private val poView: View) : RecyclerView.ViewHolder(poView){
 
         fun bindMovie(poMovie: Movie){

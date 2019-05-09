@@ -9,16 +9,23 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import com.jquiroga.onboardingdemo.Movie
 import com.jquiroga.onboardingdemo.MovieHelper
 import com.jquiroga.onboardingdemo.R
+import com.jquiroga.onboardingdemo.pagerRecycler.data.Onboarding
+import com.jquiroga.onboardingdemo.pagerRecycler.data.OnboardingData
+import com.jquiroga.onboardingdemo.pagerRecycler.steps.OnboardingAdapter
 import kotlinx.android.synthetic.main.activity_pager_recycler.*
 
 class PagerRecyclerActivity : AppCompatActivity(), OnSnapPositionChangeListener {
 
     override fun onSnapPositionChange(poPosition: Int) {
         Log.d("9988", "position $poPosition")
+        gOnboardingAdapter.updateFocus(poPosition)
+
     }
 
     private lateinit var gLinearLayoutManager: LinearLayoutManager
+    private lateinit var gLinearLayoutManager2: LinearLayoutManager
     private lateinit var gPagerAdapter: PagerAdapter
+    private lateinit var gOnboardingAdapter: OnboardingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +51,25 @@ class PagerRecyclerActivity : AppCompatActivity(), OnSnapPositionChangeListener 
 
         rcvPager.attachSnapHelperWithListener(rcvSnapHelper, SnapOnScrollListener.Behavior.NOTIFY_ON_SCROLL, this)
 
+        //Custom pager focus
+
+        val laoOnboarding: ArrayList<Onboarding>? = OnboardingData().getDataForOnboarding()
+
+        laoOnboarding?.let {
+
+            val loOnboarding: Onboarding = laoOnboarding[0]
+
+            loOnboarding.isViewFocused = true
+
+            gLinearLayoutManager2 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+            rcvFocusPager.layoutManager = gLinearLayoutManager2
+
+            gOnboardingAdapter = OnboardingAdapter(laoOnboarding)
+
+            rcvFocusPager.adapter = gOnboardingAdapter
+
+        }
     }
 
 }
